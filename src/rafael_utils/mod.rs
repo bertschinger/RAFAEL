@@ -181,7 +181,7 @@ pub fn root_dir_walk(
         //Run statx on top level item to ensure it is a directory and also not a directory symlink
         match do_statx(AT_FDCWD, &path) {
             Ok(entry_metadata) => {
-                if SFlag::from_bits_truncate(entry_metadata.stx_mode.into()) & SFlag::S_IFMT
+                if SFlag::from_bits_truncate(entry_metadata.mode.into()) & SFlag::S_IFMT
                     == SFlag::S_IFDIR
                 {
                     //Check if entry is an exception

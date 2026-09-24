@@ -181,10 +181,10 @@ fn worker_main(
                             args.dry_run,
                             &mut worker_log_file,
                             &target,
-                            target_metadata.stx_atime.tv_sec,
-                            target_metadata.stx_ctime.tv_sec,
-                            target_metadata.stx_mtime.tv_sec,
-                            target_metadata.stx_uid,
+                            target_metadata.atime,
+                            target_metadata.ctime,
+                            target_metadata.mtime,
+                            target_metadata.uid,
                         )
                     }
                     Err(e) => {
@@ -197,10 +197,10 @@ fn worker_main(
                         args.dry_run,
                         &mut worker_log_file,
                         &target,
-                        target_metadata.stx_atime.tv_sec,
-                        target_metadata.stx_ctime.tv_sec,
-                        target_metadata.stx_mtime.tv_sec,
-                        target_metadata.stx_uid,
+                        target_metadata.atime,
+                        target_metadata.ctime,
+                        target_metadata.mtime,
+                        target_metadata.uid,
                     )
                 }
             },

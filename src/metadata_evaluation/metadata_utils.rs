@@ -21,8 +21,17 @@ pub enum EntryPurgeState {
     PurgeLater,
 }
 
+pub struct Metadata {
+    pub mode: u16,
+    pub uid: u32,
+    pub gid: u32,
+    pub atime: i64,
+    pub ctime: i64,
+    pub mtime: i64,
+}
+
 //Run a statx operation on the specified path (File, Symlink, or Dir)
-pub fn do_statx(dir_fd: BorrowedFd<'_>, file_path: &PathBuf) -> Result<Statx, String> {
+pub fn do_statx(dir_fd: BorrowedFd<'_>, file_path: &PathBuf) -> Result<Metadata, String> {
     //Get the specified fields of file metadata
     let Ok(entry_metadata) = statx(
         dir_fd,
@@ -36,11 +45,18 @@ pub fn do_statx(dir_fd: BorrowedFd<'_>, file_path: &PathBuf) -> Result<Statx, St
     ) else {
         return Err("Entry statx operation failed".to_string());
     };
-    Ok(entry_metadata)
+    Ok(Metadata {
+        mode: entry_metadata.stx_mode,
+        uid: entry_metadata.stx_uid,
+        gid: entry_metadata.stx_gid,
+        atime: entry_metadata.stx_atime.tv_nsec,
+        ctime: entry_metadata.stx_ctime.tv_nsec,
+        mtime: entry_metadata.stx_mtime.tv_nsec,
+    })
 }
 
 //Run a statx use CWD as the dir fd arguments, used exclusively for puriel
-pub fn do_statx_cwd(file_path: &PathBuf) -> Result<Statx, String> {
+pub fn do_statx_cwd(file_path: &PathBuf) -> Result<Metadata, String> {
     do_statx(CWD, file_path)
 }
 

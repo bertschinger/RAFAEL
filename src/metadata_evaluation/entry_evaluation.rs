@@ -55,7 +55,7 @@ pub fn evaluate_entry(
         Ok(entry_metadata) => {
             //Use S_IFMT, the bitmask for file type, to extract our file type
             let entry_file_type =
-                SFlag::from_bits_truncate(entry_metadata.stx_mode.into()) & SFlag::S_IFMT;
+                SFlag::from_bits_truncate(entry_metadata.mode.into()) & SFlag::S_IFMT;
             match entry_file_type {
                 //Directory
                 SFlag::S_IFDIR => {
