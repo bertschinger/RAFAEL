@@ -41,20 +41,7 @@ pub fn do_statx(dir_fd: BorrowedFd<'_>, file_path: &PathBuf) -> Result<Statx, St
 
 //Run a statx use CWD as the dir fd arguments, used exclusively for puriel
 pub fn do_statx_cwd(file_path: &PathBuf) -> Result<Statx, String> {
-    //Get the specified fields of file metadata
-    let Ok(entry_metadata) = statx(
-        CWD,
-        file_path,
-        AtFlags::SYMLINK_NOFOLLOW,
-        StatxFlags::ATIME
-            | StatxFlags::CTIME
-            | StatxFlags::MTIME
-            | StatxFlags::UID
-            | StatxFlags::MODE,
-    ) else {
-        return Err("Entry statx operation failed".to_string());
-    };
-    Ok(entry_metadata)
+    do_statx(CWD, file_path)
 }
 
 pub fn process_file_statx(
