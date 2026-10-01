@@ -51,7 +51,8 @@ pub fn evaluate_entry(
     let entry_path = cstr_to_pathbuf_with_dir(entry_name, current_local_dir_path);
 
     //Run statx on the entry
-    match do_statx(dir_fd, &entry_path) {
+    use std::os::unix::ffi::OsStrExt;
+    match do_statx(dir_fd, &PathBuf::from(std::ffi::OsStr::from_bytes(entry_name.to_bytes()))) {
         Ok(entry_metadata) => {
             //Use S_IFMT, the bitmask for file type, to extract our file type
             let entry_file_type =

@@ -441,8 +441,8 @@ fn thread_directory_scan(
     //Get the specified fields of dir metadata
     let Ok(dir_metadata) = statx(
         dir_fd,
-        &current_local_dir.path,
-        AtFlags::empty(), //The only AtFlag we would care about would be NOFOLLOW for symlinks, but that will be done on files
+        "",
+        AtFlags::EMPTY_PATH,
         StatxFlags::ATIME | StatxFlags::CTIME | StatxFlags::MTIME | StatxFlags::UID,
     ) else {
         return Err(format!(
